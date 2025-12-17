@@ -1,16 +1,23 @@
 //  U can get your api key from bg remover also am using free subs 
 
-export const API_KEY = '8XsN8ZaAumNikKgGH42NWygH';
+export const API_KEY = import.meta.env.VITE_REMOVE_BG_API_KEY;
+
+
+if (!API_KEY) {
+  console.error(' Remove.bg API key is missing!');
+  console.log('Create a .env file with: VITE_REMOVE_BG_API_KEY=your_key_here');
+}
+
 
 
 export const removeBackground = async (imageData) => {
   try {
-    console.log('🚀 Starting background removal with Remove.bg API...');
-    console.log('🔑 Using API Key:', API_KEY.substring(0, 6) + '...');
+    console.log(' Starting background removal with Remove.bg API...');
+    console.log(' Using API Key:', API_KEY.substring(0, 6) + '...');
     
     
     const blob = await dataURLtoBlob(imageData);
-    console.log('📊 Image converted to blob, size:', Math.round(blob.size / 1024) + 'KB');
+    console.log(' Image converted to blob, size:', Math.round(blob.size / 1024) + 'KB');
     
     // Create form data
     const formData = new FormData();
