@@ -5,12 +5,12 @@ export const API_KEY = '8XsN8ZaAumNikKgGH42NWygH';
 
 export const removeBackground = async (imageData) => {
   try {
-    console.log('🚀 Starting background removal with Remove.bg API...');
-    console.log('🔑 Using API Key:', API_KEY.substring(0, 6) + '...');
+    console.log(' Starting background removal with Remove.bg API...');
+    console.log(' Using API Key:', API_KEY.substring(0, 6) + '...');
     
     
     const blob = await dataURLtoBlob(imageData);
-    console.log('📊 Image converted to blob, size:', Math.round(blob.size / 1024) + 'KB');
+    console.log(' Image converted to blob, size:', Math.round(blob.size / 1024) + 'KB');
     
     // Create form data
     const formData = new FormData();
@@ -89,12 +89,12 @@ export const removeBackground = async (imageData) => {
   } catch (error) {
     console.error(' Error in background removal:', error);
     
-    // More detailed error handling
+    
     if (error.name === 'AbortError') {
       throw new Error('Request timed out. Try a smaller image or check your connection.');
     }
     
-    // Check if it's a network error
+    
     if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
       throw new Error('Network error. Please check your internet connection.');
     }
@@ -104,10 +104,10 @@ export const removeBackground = async (imageData) => {
   }
 };
 
-// Helper function to convert base64 to blob
+
 const dataURLtoBlob = async (dataurl) => {
   try {
-    // Extract base64 data and mime type
+    
     const parts = dataurl.split(';base64,');
     if (parts.length !== 2) {
       throw new Error('Invalid data URL format');
@@ -128,7 +128,7 @@ const dataURLtoBlob = async (dataurl) => {
   }
 };
 
-// Helper function to convert blob to data URL
+
 const blobToDataURL = (blob) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -138,7 +138,7 @@ const blobToDataURL = (blob) => {
   });
 };
 
-/// Optional: Test API key function (for debugging)
+
 export const testApiKey = async () => {
   try {
     console.log('Testing API key...');
@@ -152,24 +152,24 @@ export const testApiKey = async () => {
       const data = await response.json();
       console.log(' API Key is valid!');
       
-      // Handle different possible response structures
+      
       let creditsInfo = {};
       if (data.data && data.data.credits) {
-        // Old structure
+        
         creditsInfo = {
           total: data.data.credits.total,
           used: data.data.credits.used,
           remaining: data.data.credits.free_credits || data.data.credits.total - data.data.credits.used
         };
       } else if (data.credits) {
-        // New structure or direct credits object
+        
         creditsInfo = {
-          total: data.credits.total || data.credits.available || 50, // Fallback to 50 (free tier)
+          total: data.credits.total || data.credits.available || 50, 
           used: data.credits.used || 0,
           remaining: data.credits.free_credits || data.credits.remaining || 50
         };
       } else {
-        // Minimal structure if we can't parse details
+        
         creditsInfo = { total: 50, used: 0, remaining: 50 };
       }
       
